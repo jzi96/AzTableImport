@@ -28,8 +28,8 @@ jobs:
         release-branch: main
         dev-branch: develop
     - name: Restore dependencies
-      run: dotnet restore AzTableImport/AzTableImport.csproj
+      run: dotnet restore src/AzTableImport/AzTableImport.csproj
     - name: Build
-      run: dotnet build --no-restore -c Release /p:Version=${{steps.version.outputs.version}} AzTableImport/AzTableImport.csproj
+      run: dotnet build --no-restore -c Release /p:Version=${{steps.version.outputs.version}} src/AzTableImport/AzTableImport.csproj
 #    - name: Test
 #      run: dotnet test --no-build --verbosity normal
