@@ -38,6 +38,6 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: net6-managed
-        path: src/AzTableImport/bin\Release/net6.0/publish # or path/to/artifact
+        path: src/AzTableImport/bin/Release/net6.0/publish/
 #    - name: Test
 #      run: dotnet test --no-build --verbosity normal
