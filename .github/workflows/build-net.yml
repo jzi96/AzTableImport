@@ -26,12 +26,17 @@ jobs:
     - name: Generate build number
       uses: einaregilsson/build-number@v3
       with:
-        token: ${{secrets.github_token}}        
+        token: ${{secrets.github_token}}
     - name: Print new build number
       run: echo "Build number is $BUILD_NUMBER"
     - name: Restore dependencies
-      run: dotnet restore src/AzTableImport/AzTableImport.csproj
-    - name: Build
-      run: dotnet build -c Release /p:Version=$BUILD_NUMBER src/AzTableImport/AzTableImport.csproj
+      run: dotnet restore  
+    - name: Build/Publish
+      run: dotnet publish -c Release /p:Version=$BUILD_NUMBER src/AzTableImport/AzTableImport.csproj
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: net6-managed
+        path: src/AzTableImport/bin\Release/net6.0/publish # or path/to/artifact
 #    - name: Test
 #      run: dotnet test --no-build --verbosity normal
