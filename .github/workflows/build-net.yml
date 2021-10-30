@@ -31,6 +31,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore src/AzTableImport/AzTableImport.csproj
     - name: Build
-      run: dotnet build --no-restore -c Release /p:Version=$BUILD_NUMBER src/AzTableImport/AzTableImport.csproj
+      run: dotnet build -c Release /p:Version=$BUILD_NUMBER src/AzTableImport/AzTableImport.csproj
 #    - name: Test
 #      run: dotnet test --no-build --verbosity normal
