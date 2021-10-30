@@ -10,7 +10,7 @@ internal class ConsoleHostedService : BackgroundService
     private readonly IHostApplicationLifetime appLifetime;
     private readonly IConfiguration config;
     private int exitCode = -1;
-    internal static string[] Arguments { get; set; }
+    internal static string[]? Arguments { get; set; }
     public ConsoleHostedService(
         ILogger<ConsoleHostedService> logger,
         IHostApplicationLifetime appLifetime,
@@ -30,6 +30,10 @@ internal class ConsoleHostedService : BackgroundService
             Environment.ExitCode = exitCode;
         });
         var args = Arguments;
+        if(args == null){
+            appLifetime.StopApplication();
+            return Task.CompletedTask;
+        }
         logger.LogDebug("Starting with arguments: {args}", string.Join(" ", args));
         var fileOpt = new Option<FileInfo[]>("--import-file")
         {
