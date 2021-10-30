@@ -32,12 +32,19 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore src/AzTableImport/AzTableImport.csproj
 
-    - name: Build/Publish
-      run: dotnet publish -c Release /p:Version=$BUILD_NUMBER src/AzTableImport/AzTableImport.csproj
+    - name: Build/Publish Win10
+      run: dotnet publish -c Release -r win10-x64 /p:Version=$BUILD_NUMBER src/AzTableImport/AzTableImport.csproj
+
+    - name: Build/Publish Linux
+      run: dotnet publish -c Release -r linux-x64 /p:Version=$BUILD_NUMBER src/AzTableImport/AzTableImport.csproj
 
     - uses: actions/upload-artifact@v2
       with:
-        name: net6-managed
-        path: src/AzTableImport/bin/Release/net6.0/publish/
+        name: net6-managed-win10
+        path: src/AzTableImport/bin/Release/net6.0/win10-x64/publish/
+    - uses: actions/upload-artifact@v2
+      with:
+        name: net6-managed-linux
+        path: src/AzTableImport/bin/Release/net6.0/linux-x64/publish/
 #    - name: Test
 #      run: dotnet test --no-build --verbosity normal
