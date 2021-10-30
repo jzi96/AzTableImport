@@ -49,11 +49,11 @@ jobs:
 
     - name: Build/Publish Win10
       run: |
-        dotnet publish -c Release -r win10-x64 /p:Version=$VERSION $projectFile
+        dotnet publish -c Release -r win10-x64 --self-contained /p:Version=$VERSION $projectFile
 
     - name: Build/Publish Linux
       run: |
-        dotnet publish -c Release -r linux-x64 /p:Version=$VERSION $projectFile
+        dotnet publish -c Release -r linux-x64 --self-contained /p:Version=$VERSION $projectFile
 
     - uses: actions/upload-artifact@v2
       with:
