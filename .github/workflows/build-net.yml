@@ -5,6 +5,11 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+  projectFile: src/AzTableImport/AzTableImport.csproj
 
 jobs:
   build:
@@ -29,22 +34,34 @@ jobs:
         token: ${{secrets.github_token}}
     - name: Print new build number
       run: echo "Build number is $BUILD_NUMBER"
-    - name: Restore dependencies
-      run: dotnet restore src/AzTableImport/AzTableImport.csproj
+    # - name: Restore dependencies
+    #   run: dotnet restore src/AzTableImport/AzTableImport.csproj
 
+    # tag versions "v{Major}.{Minor}.{Build}"
     - name: Build/Publish Win10
-      run: dotnet publish -c Release -r win10-x64 /p:Version=$BUILD_NUMBER src/AzTableImport/AzTableImport.csproj
+      run: |
+        arrTag=(${GITHUB_REF//\// })
+        VERSION="${arrTag[2]}"
+        VERSION="${VERSION//v}.${{ github.run_number }}"
+        echo Version set to: $VERSION
+        echo Project File = $projectFile
+        dotnet publish -c Release -r win10-x64 /p:Version=$VERSION $projectFile
 
     - name: Build/Publish Linux
-      run: dotnet publish -c Release -r linux-x64 /p:Version=$BUILD_NUMBER src/AzTableImport/AzTableImport.csproj
+      run: |
+        arrTag=(${GITHUB_REF//\// })
+        VERSION="${arrTag[2]}"
+        VERSION="${VERSION//v}.${{ github.run_number }}"
+        echo Version set to: $VERSION
+        dotnet publish  --no-restore -c Release -r linux-x64 /p:Version=$VERSION src/AzTableImport/AzTableImport.csproj
 
     - uses: actions/upload-artifact@v2
       with:
-        name: net6-managed-$BUILD_NUMBER-win10
+        name: net6-managed-win10
         path: src/AzTableImport/bin/Release/net6.0/win10-x64/publish/
     - uses: actions/upload-artifact@v2
       with:
-        name: net6-managed-$BUILD_NUMBER-linux
+        name: net6-managed-linux
         path: src/AzTableImport/bin/Release/net6.0/linux-x64/publish/
 #    - name: Test
 #      run: dotnet test --no-build --verbosity normal
