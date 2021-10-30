@@ -40,11 +40,11 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: net6-managed-win10
+        name: net6-managed-$BUILD_NUMBER-win10
         path: src/AzTableImport/bin/Release/net6.0/win10-x64/publish/
     - uses: actions/upload-artifact@v2
       with:
-        name: net6-managed-linux
+        name: net6-managed-$BUILD_NUMBER-linux
         path: src/AzTableImport/bin/Release/net6.0/linux-x64/publish/
 #    - name: Test
 #      run: dotnet test --no-build --verbosity normal
